@@ -30,4 +30,9 @@ export class User {
   get trigger() {
     return this.events.trigger;
   }
+
+  set(props: UserProps): void {
+    this.attributes.set(props);
+    this.events.trigger("change");
+  }
 }
