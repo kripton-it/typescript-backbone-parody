@@ -1,6 +1,6 @@
-import { AxiosResponse } from "axios";
-import { Eventing, Callback } from "./Eventing";
-import { Sync } from "./Sync";
+import { Model } from "./Model";
+import { Eventing } from "./Eventing";
+import { ApiSync } from "./ApiSync";
 import { Attributes } from "./Attributes";
 
 const rootUrl = "http://localhost:3000/users";
@@ -11,55 +11,16 @@ export interface UserProps {
   age?: number;
 }
 
-export class User {
-  public events: Eventing = new Eventing();
-  public sync: Sync<UserProps> = new Sync<UserProps>(rootUrl);
-  public attributes: Attributes<UserProps>;
-
-  constructor(data: UserProps) {
-    this.attributes = new Attributes<UserProps>(data);
+export class User extends Model<UserProps> {
+  static create(props: UserProps): User {
+    return new User(
+      new Attributes<UserProps>(props),
+      new Eventing(),
+      new ApiSync<UserProps>(rootUrl)
+    );
   }
 
-  get get() {
-    return this.attributes.get;
-  }
-
-  get on() {
-    return this.events.on;
-  }
-
-  get trigger() {
-    return this.events.trigger;
-  }
-
-  set(props: UserProps): void {
-    this.attributes.set(props);
-    this.events.trigger("change");
-  }
-
-  fetch(): void {
-    const id = this.attributes.get("id");
-    if (typeof id !== "number") {
-      throw new Error("Cannot fetch without an id");
-    }
-    this.sync
-      .fetch(id)
-      .then((response: AxiosResponse): void => {
-        this.set(response.data);
-      })
-      .catch(() => {
-        this.trigger("error");
-      });
-  }
-
-  save(): void {
-    this.sync
-      .save(this.attributes.getAll())
-      .then((response: AxiosResponse): void => {
-        this.trigger("save");
-      })
-      .catch(() => {
-        this.trigger("error");
-      });
+  isAdmin(): boolean {
+    return this.get("id") === 1;
   }
 }
