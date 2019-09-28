@@ -1,8 +1,8 @@
-import axios, { AxiosResponse } from "axios";
+
 
 import { Eventing } from "./Eventing";
 
-interface UserProps {
+export interface UserProps {
   id?: number;
   name?: string;
   age?: number;
@@ -21,7 +21,7 @@ export class User {
     Object.assign(this.data, props);
   }
 
-  fetch(): void {
+  /* fetch(): void {
     const id = this.get("id");
     const url = `http://localhost:3000/users/${id}`;
     axios.get(url).then((response: AxiosResponse): void => {
@@ -39,5 +39,5 @@ export class User {
       const url = "http://localhost:3000/users";
       axios.post(url, this.data);
     }
-  }
+  } */
 }
