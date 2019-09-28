@@ -28,17 +28,11 @@ export class Model<T extends HasId> {
     private sync: ModelSync<T>
   ) {}
 
-  get get() {
-    return this.attributes.get;
-  }
+  get = this.attributes.get;
 
-  get on() {
-    return this.events.on;
-  }
+  on = this.events.on;
 
-  get trigger() {
-    return this.events.trigger;
-  }
+  trigger = this.events.trigger;
 
   set(props: T): void {
     this.attributes.set(props);
