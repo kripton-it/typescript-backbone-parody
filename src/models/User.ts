@@ -41,4 +41,16 @@ export class User {
       this.set(response.data);
     });
   }
+
+  save(): void {
+    const id = this.get("id");
+
+    if (id) {
+      const url = `http://localhost:3000/users/${id}`;
+      axios.put(url, this.data);
+    } else {
+      const url = "http://localhost:3000/users";
+      axios.post(url, this.data);
+    }
+  }
 }
