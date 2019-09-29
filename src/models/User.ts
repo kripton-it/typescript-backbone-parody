@@ -35,4 +35,8 @@ export class User extends Model<UserProps> {
   setRandomAge(max: number, min: number = 0): void {
     this.set({ age: Math.floor(min + Math.random() * (max - min + 1)) });
   }
+
+  setName(name: string): void {
+    this.set({ name });
+  }
 }
