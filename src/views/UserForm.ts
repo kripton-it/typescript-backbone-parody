@@ -5,7 +5,8 @@ export class UserForm extends View<User, UserProps> {
   mapEvents(): { [key: string]: () => void } {
     return {
       "click:.set-random-age": this.onSetRandomAgeButtonClick,
-      "click:.update-name": this.onUpdateNameButtonClick
+      "click:.update-name": this.onUpdateNameButtonClick,
+      "click:.save": this.onSaveButtonClick
     };
   }
 
@@ -22,17 +23,19 @@ export class UserForm extends View<User, UserProps> {
     }
   };
 
+  onSaveButtonClick = (): void => {
+    // this.model.setRandomAge(30, 10);
+    this.model.save();
+  };
+
   template(): string {
     const name = this.model.get("name");
-    const age = this.model.get("age");
 
     return `<div>
-      <h1>User Form</h1>
-      <div>User Name: ${name}</div>
-      <div>User Age: ${age}</div>
-      <input />
+      <input placeholder="${name}" />
       <button class="update-name">Update Name</button>
       <button class="set-random-age">Set Random Age</button>
+      <button class="save">Save</button>
     </div>`;
   }
 }
