@@ -9,8 +9,11 @@ export abstract class View<T extends Model<K>, K> {
     this.bindModel();
   }
 
-  abstract mapEvents(): { [key: string]: () => void };
   abstract template(): string;
+
+  mapEvents(): { [key: string]: () => void } {
+    return {};
+  }
 
   bindModel(): void {
     this.model.on("change", () => {

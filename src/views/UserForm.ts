@@ -24,7 +24,6 @@ export class UserForm extends View<User, UserProps> {
   };
 
   onSaveButtonClick = (): void => {
-    // this.model.setRandomAge(30, 10);
     this.model.save();
   };
 
