@@ -34,7 +34,11 @@ export class UserForm {
 
   onUpdateNameButtonClick = (): void => {
     const input = this.parent.querySelector("input");
-    this.model.setName(input.value);
+    if (input) {
+      this.model.setName(input.value);
+    } else {
+      throw new Error("Input not found");
+    }
   };
 
   template(): string {
