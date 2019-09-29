@@ -1,31 +1,12 @@
-import { User } from "../models/User";
+import { User, UserProps } from "../models/User";
+import { View } from "./View";
 
-export class UserForm {
-  constructor(public parent: Element, public model: User) {
-    this.bindModel();
-  }
-
-  bindModel(): void {
-    this.model.on("change", () => {
-      this.render();
-    });
-  }
-
+export class UserForm extends View<User, UserProps> {
   mapEvents(): { [key: string]: () => void } {
     return {
       "click:.set-random-age": this.onSetRandomAgeButtonClick,
       "click:.update-name": this.onUpdateNameButtonClick
     };
-  }
-
-  bindEvents(fragment: DocumentFragment): void {
-    const eventsMap = this.mapEvents();
-    for (let eventKey in eventsMap) {
-      const [eventName, selector] = eventKey.split(":");
-      fragment.querySelectorAll(selector).forEach((element: Element): void => {
-        element.addEventListener(eventName, eventsMap[eventKey]);
-      });
-    }
   }
 
   onSetRandomAgeButtonClick = (): void => {
@@ -53,13 +34,5 @@ export class UserForm {
       <button class="update-name">Update Name</button>
       <button class="set-random-age">Set Random Age</button>
     </div>`;
-  }
-
-  render(): void {
-    this.parent.innerHTML = "";
-    const templateElement = document.createElement("template");
-    templateElement.innerHTML = this.template();
-    this.bindEvents(templateElement.content);
-    this.parent.append(templateElement.content);
   }
 }
