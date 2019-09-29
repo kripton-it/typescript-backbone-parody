@@ -1,9 +1,9 @@
-import { User } from "./models/User";
+import { Collection } from "./models/Collection";
 
-const user = User.create({ id: 1 });
-user.set({
-  age: 30
+const collection = new Collection("http://localhost:3000/users");
+
+collection.on("change", () => {
+  console.log(collection);
 });
 
-console.log(user.get("age"));
-console.log(user.isAdmin());
+collection.fetch();
