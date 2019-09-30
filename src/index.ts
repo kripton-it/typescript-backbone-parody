@@ -1,12 +1,22 @@
-import { UserEdit } from "./views/UserEdit";
-import { User } from "./models/User";
+import { UserList } from "./views/UserList";
+import { User, UserProps } from "./models/User";
+import { Collection } from "./models/Collection";
 
-const target = document.getElementById("user-edit");
-const user = User.create({ name: "John", age: 50 });
+const users = new Collection<User, UserProps>(
+  "http://localhost:3000/users",
+  (json: UserProps): User => User.create(json)
+);
 
-if (target) {
-  const userEdit = new UserEdit(target, user);
-  userEdit.render();
-} else {
-  throw new Error("Target element not found");
-}
+const onUsersChangeHandler = (): void => {
+  const target = document.getElementById("user-list");
+  if (target) {
+    const userList = new UserList(target, users);
+    userList.render();
+  } else {
+    throw new Error("Target element not found");
+  }
+};
+
+users.on("change", onUsersChangeHandler);
+
+users.fetch();
